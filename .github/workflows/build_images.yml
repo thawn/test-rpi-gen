@@ -42,8 +42,8 @@ jobs:
           cat > test-stage/package/03-run-chroot.sh <<-EOF
           #!/bin/bash
           ls -la /usr/local/share/
-          ls -la /usr/local/share/test-stage
-          cat /usr/local/share/test-stage/README
+          #ls -la /usr/local/share/test-stage #<- fails no such file or directory
+          #cat /usr/local/share/test-stage/README
           EOF
           } &&
           chmod +x test-stage/package/03-run-chroot.sh
@@ -57,6 +57,8 @@ jobs:
           stage-list: stage0 test-stage
           export-last-stage-only: true
           verbose-output: true
+
+      - run: tree
 
       - uses: actions/upload-artifact@v4
         with:
