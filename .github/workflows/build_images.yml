@@ -1,0 +1,66 @@
+on:
+  push:
+    branches:
+      - main
+jobs:
+  pi-gen-templog:
+    runs-on: ubuntu-latest
+    steps:
+      # Create a stage 'pitemplog' instructing to add Nodesource repo and install nodejs as dependency
+
+      - name: set up pi-gen steps
+        run: |
+          mkdir -p test-stage &&
+          {
+          cat > test-stage/prerun.sh <<-EOF
+          #!/bin/bash -e
+          if [ ! -d "${ROOTFS_DIR}" ]; then
+            copy_previous
+          fi
+          echo "ROOTFS_DIR: ${ROOTFS_DIR}"
+          echo "PREV_ROOTFS_DIR: ${PREV_ROOTFS_DIR}"
+          echo "STAGE_WORK_DIR: $STAGE_WORK_DIR"
+          echo "WORK_DIR: ${WORK_DIR}"
+          echo "STAGE: ${STAGE}"
+          EOF
+          EOF
+          } &&
+          chmod +x test-stage/prerun.sh &&      
+          mkdir -p test-stage/package-pitemplog &&
+          echo "raspi-firmware" > test-stage/package/00-packages &&
+          {
+          cat > test-stage/package/02-run.sh <<-EOF
+          #!/bin/bash
+          echo "ROOTFS_DIR: ${ROOTFS_DIR}"
+          echo "current_dir: $(pwd)"
+          mkdir -p "${ROOTFS_DIR}/usr/local/share/test-stage"
+          echo "This is a test stage" > "${ROOTFS_DIR}/usr/local/share/test-stage/README"
+          ls -la "${ROOTFS_DIR}/usr/local/share/test-stage"
+          EOF
+          } &&
+          chmod +x test-stage/package/02-run.sh &&
+          {
+          cat > test-stage/package/03-run-chroot.sh <<-EOF
+          #!/bin/bash
+          ls -la /usr/local/share/
+          ls -la /usr/local/share/test-stage
+          cat /usr/local/share/test-stage/README
+          EOF
+          } &&
+          chmod +x test-stage/package/03-run-chroot.sh &&
+          {
+
+      - run: tree
+
+      - uses: usimd/pi-gen-action@v1
+        id: build
+        with:
+          image-name: test-stage
+          stage-list: stage0 test-stage
+          export-last-stage-only: true
+          verbose-output: true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: test-image
+          path: ${{ steps.build.outputs.image-path }}
