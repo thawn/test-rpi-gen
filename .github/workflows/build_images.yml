@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - main
+      - two-stages
 jobs:
   pi-gen-templog:
     runs-on: ubuntu-latest
@@ -44,14 +45,30 @@ jobs:
           {
           cat > test-stage/00-package/03-run-chroot.sh <<-EOF
           #!/bin/bash
-          echo "current_dir: $(pwd)"
-          ls -la
-          ls -la /usr/local/share/
-          ls -la /usr/local/share/test-stage #<- fails no such file or directory
-          cat /usr/local/share/test-stage/README
+          mkdir -p /usr/local/share/test-stage-1/ #<- fails no such file or directory
+          echo "testing chroot" /usr/local/share/test-stage-1/README
           EOF
           } &&
-          chmod +x test-stage/00-package/03-run-chroot.sh
+          chmod +x test-stage/00-package/03-run-chroot.sh &&
+          mkdir -p test-stage-2 &&
+          {
+          cat > test-stage-2/prerun.sh <<-EOF
+          #!/bin/bash -e
+          if [ ! -d "${ROOTFS_DIR}" ]; then
+            copy_previous
+          fi
+          EOF
+          } &&
+          mkdir -p test-stage-2/00-package &&
+          {
+          cat > test-stage-2/00-package/00-run-chroot.sh <<-EOF
+          #!/bin/bash
+          ls -la /usr/local/share/
+          ls -la /usr/local/share/test-stage-1/
+          cat /usr/local/share/test-stage-1/README
+          EOF
+          } &&
+          chmod +x test-stage-2/00-package/03-run-chroot.sh &&
 
       - run: tree
 
