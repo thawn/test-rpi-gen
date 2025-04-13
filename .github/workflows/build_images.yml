@@ -43,6 +43,8 @@ jobs:
           {
           cat > test-stage/package/03-run-chroot.sh <<-EOF
           #!/bin/bash
+          echo "current_dir: $(pwd)"
+          ls -la
           ls -la /usr/local/share/
           #ls -la /usr/local/share/test-stage #<- fails no such file or directory
           #cat /usr/local/share/test-stage/README
