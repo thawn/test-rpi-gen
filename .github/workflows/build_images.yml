@@ -34,7 +34,9 @@ jobs:
           echo "current_dir: $(pwd)"
           mkdir -p "${ROOTFS_DIR}/usr/local/share/test-stage"
           echo "This is a test stage" > "${ROOTFS_DIR}/usr/local/share/test-stage/README"
+          echo "${ROOTFS_DIR}/usr/local/share/test-stage/README"
           ls -la "${ROOTFS_DIR}/usr/local/share/test-stage"
+          cat "${ROOTFS_DIR}/usr/local/share/test-stage/README"
           EOF
           } &&
           chmod +x test-stage/package/02-run.sh &&
@@ -59,6 +61,11 @@ jobs:
           verbose-output: true
 
       - run: tree
+
+      - name: Check for test-stage
+        run: |
+          /usr/bin/docker exec -it pigen_work ls -la /usr/local/share/
+
 
       - uses: actions/upload-artifact@v4
         with:
