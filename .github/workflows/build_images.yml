@@ -59,6 +59,7 @@ jobs:
           stage-list: stage0 test-stage
           export-last-stage-only: true
           verbose-output: true
+          increase-runner-disk-size: true
 
       - run: tree
 
