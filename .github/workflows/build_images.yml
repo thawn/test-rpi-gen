@@ -46,9 +46,9 @@ jobs:
           #!/bin/bash
           echo "current_dir: $(pwd)"
           ls -la
-          ls -la usr/local/share/
-          ls -la usr/local/share/test-stage #<- fails no such file or directory
-          cat usr/local/share/test-stage/README
+          ls -la /usr/local/share/
+          ls -la /usr/local/share/test-stage #<- fails no such file or directory
+          cat /usr/local/share/test-stage/README
           EOF
           } &&
           chmod +x test-stage/00-package/03-run-chroot.sh
@@ -63,12 +63,6 @@ jobs:
           export-last-stage-only: true
           verbose-output: true
           increase-runner-disk-size: true
-
-      - run: tree
-
-      - name: Check for test-stage
-        run: |
-          /usr/bin/docker exec -it pigen_work ls -la /usr/local/share/
 
       - uses: actions/upload-artifact@v4
         with:
