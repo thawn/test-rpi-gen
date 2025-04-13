@@ -59,6 +59,7 @@ jobs:
           fi
           EOF
           } &&
+          chmod +x test-stage-2/prerun.sh &&      
           mkdir -p test-stage-2/00-package &&
           {
           cat > test-stage-2/00-package/00-run-chroot.sh <<-EOF
