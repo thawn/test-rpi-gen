@@ -68,7 +68,7 @@ jobs:
           cat /usr/local/share/test-stage-1/README
           EOF
           } &&
-          chmod +x test-stage-2/00-package/03-run-chroot.sh &&
+          chmod +x test-stage-2/00-package/00-run-chroot.sh
 
       - run: tree
 
@@ -76,7 +76,7 @@ jobs:
         id: build
         with:
           image-name: test-stage
-          stage-list: stage0 test-stage
+          stage-list: test-stage test-stage-2
           export-last-stage-only: true
           verbose-output: true
           increase-runner-disk-size: true
