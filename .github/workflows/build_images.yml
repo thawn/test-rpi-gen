@@ -11,7 +11,23 @@ jobs:
 
       - name: set up pi-gen steps
         run: |
+          mkdir -p test-stage &&
+          {
+          cat > test-stage/prerun.sh <<-EOF
+          #!/bin/bash -e
+          if [ ! -d "${ROOTFS_DIR}" ]; then
+            copy_previous
+          fi
+          echo "ROOTFS_DIR: ${ROOTFS_DIR}"
+          echo "PREV_ROOTFS_DIR: ${PREV_ROOTFS_DIR}"
+          echo "STAGE_WORK_DIR: $STAGE_WORK_DIR"
+          echo "WORK_DIR: ${WORK_DIR}"
+          echo "STAGE: ${STAGE}"
+          EOF
+          } &&
+          chmod +x test-stage/prerun.sh &&      
           mkdir -p test-stage/00-package &&
+          echo "raspi-firmware" > test-stage/00-package/00-packages &&
           {
           cat > test-stage/00-package/02-run.sh <<-EOF
           #!/bin/bash
@@ -60,7 +76,7 @@ jobs:
         id: build
         with:
           image-name: test-stage
-          stage-list: test-stage test-stage-2
+          stage-list: stage0 test-stage test-stage-2
           export-last-stage-only: true
           verbose-output: true
 
