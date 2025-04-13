@@ -45,9 +45,9 @@ jobs:
           #!/bin/bash
           echo "current_dir: $(pwd)"
           ls -la
-          ls -la /usr/local/share/
-          #ls -la /usr/local/share/test-stage #<- fails no such file or directory
-          #cat /usr/local/share/test-stage/README
+          ls -la usr/local/share/
+          ls -la usr/local/share/test-stage #<- fails no such file or directory
+          cat usr/local/share/test-stage/README
           EOF
           } &&
           chmod +x test-stage/package/03-run-chroot.sh
