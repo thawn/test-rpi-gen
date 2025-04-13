@@ -23,7 +23,6 @@ jobs:
           echo "WORK_DIR: ${WORK_DIR}"
           echo "STAGE: ${STAGE}"
           EOF
-          EOF
           } &&
           chmod +x test-stage/prerun.sh &&      
           mkdir -p test-stage/package-pitemplog &&
@@ -47,8 +46,7 @@ jobs:
           cat /usr/local/share/test-stage/README
           EOF
           } &&
-          chmod +x test-stage/package/03-run-chroot.sh &&
-          {
+          chmod +x test-stage/package/03-run-chroot.sh
 
       - run: tree
 
