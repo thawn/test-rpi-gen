@@ -25,7 +25,7 @@ jobs:
           EOF
           } &&
           chmod +x test-stage/prerun.sh &&      
-          mkdir -p test-stage/package-pitemplog &&
+          mkdir -p test-stage/package &&
           echo "raspi-firmware" > test-stage/package/00-packages &&
           {
           cat > test-stage/package/02-run.sh <<-EOF
