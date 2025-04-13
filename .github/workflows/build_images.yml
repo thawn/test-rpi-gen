@@ -63,7 +63,6 @@ jobs:
           stage-list: test-stage test-stage-2
           export-last-stage-only: true
           verbose-output: true
-          increase-runner-disk-size: true
 
       - uses: actions/upload-artifact@v4
         with:
