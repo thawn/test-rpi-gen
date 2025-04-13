@@ -25,10 +25,10 @@ jobs:
           EOF
           } &&
           chmod +x test-stage/prerun.sh &&      
-          mkdir -p test-stage/package &&
-          echo "raspi-firmware" > test-stage/package/00-packages &&
+          mkdir -p test-stage/00-package &&
+          echo "raspi-firmware" > test-stage/00-package/00-packages &&
           {
-          cat > test-stage/package/02-run.sh <<-EOF
+          cat > test-stage/00-package/02-run.sh <<-EOF
           #!/bin/bash
           echo "ROOTFS_DIR: ${ROOTFS_DIR}"
           echo "current_dir: $(pwd)"
@@ -40,9 +40,9 @@ jobs:
           cat "${ROOTFS_DIR}/usr/local/share/test-stage/README"
           EOF
           } &&
-          chmod +x test-stage/package/02-run.sh &&
+          chmod +x test-stage/00-package/02-run.sh &&
           {
-          cat > test-stage/package/03-run-chroot.sh <<-EOF
+          cat > test-stage/00-package/03-run-chroot.sh <<-EOF
           #!/bin/bash
           echo "current_dir: $(pwd)"
           ls -la
@@ -51,7 +51,7 @@ jobs:
           cat usr/local/share/test-stage/README
           EOF
           } &&
-          chmod +x test-stage/package/03-run-chroot.sh
+          chmod +x test-stage/00-package/03-run-chroot.sh
 
       - run: tree
 
@@ -69,7 +69,6 @@ jobs:
       - name: Check for test-stage
         run: |
           /usr/bin/docker exec -it pigen_work ls -la /usr/local/share/
-
 
       - uses: actions/upload-artifact@v4
         with:
