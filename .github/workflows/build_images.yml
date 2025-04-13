@@ -32,6 +32,7 @@ jobs:
           #!/bin/bash
           echo "ROOTFS_DIR: ${ROOTFS_DIR}"
           echo "current_dir: $(pwd)"
+          ls -la
           mkdir -p "${ROOTFS_DIR}/usr/local/share/test-stage"
           echo "This is a test stage" > "${ROOTFS_DIR}/usr/local/share/test-stage/README"
           echo "${ROOTFS_DIR}/usr/local/share/test-stage/README"
